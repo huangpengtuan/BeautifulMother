@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>顺丰速运</title>
+	    <!---
+	    *  网页基本设置
+	    ================================================== -->		
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="description" content="顺丰速运" />
+		<meta name="author" content="顺丰速运"/>
+		<meta name="keywords" content="顺丰速运" />
+		<!--禁止百度转码-->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--兼容ie-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <!---
+	    *  移动端设置
+	    ================================================== -->	
+	    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"/>		
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/base.css"/>
+		
+		<script src="https://cdn.sf-companion.com/cdn_source/lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.sf-companion.com/cdn_source/lib/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.sf-companion.com/cdn_source/lib/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.sf-companion.com/cdn_source/lib/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/jquery.pagination.js" type="text/javascript"></script>
+		<script src="lib/iosSelect.js" type="text/javascript"></script>
+		<script src="lib/areaData_v2.js" type="text/javascript"></script>		
+		<script src="lib/cos-js-sdk-v4.js" type="text/javascript"></script>
+		<script src="lib/uploading-files.js" type="text/javascript"></script>
+		<script src="https://cdn.sf-companion.com/cdn_source/lib/jweixin-1.0.0.js" type="text/JavaScript"></script>							
+		<script type="text/javascript">
+			//图片预加载器
+			(function (root, factory) {
+			    if (typeof define === 'function' && define.amd) {
+			        //AMD
+			        define(factory);
+			    } else if (typeof exports === 'object') {
+			        //Node, CommonJS之类的
+			        module.exports = factory();
+			    } else {
+			        //浏览器全局变量(root 即 window)
+			        root.resLoader = factory(root);
+			    }
+			}(this, function () {
+			    var isFunc = function (f) {
+			        return typeof f === 'function';
+			    }
+			    //构造器函数
+			    function resLoader(config) {
+			        this.option = {
+			            resourceType: 'image', //资源类型，默认为图片
+			            baseUrl: './', //基准url
+			            resources: [], //资源路径数组
+			            onStart: null, //加载开始回调函数，传入参数total
+			            onProgress: null, //正在加载回调函数，传入参数currentIndex, total
+			            onComplete: null //加载完毕回调函数，传入参数total
+			        }
+			        if (config) {
+			            for (i in config) {
+			                this.option[i] = config[i];
+			            }
+			        }
+			        else {
+			            alert('参数错误！');
+			            return;
+			        }
+			        this.status = 0; //加载器的状态，0：未启动   1：正在加载   2：加载完毕
+			        this.total = this.option.resources.length || 0; //资源总数
+			        this.currentIndex = 0; //当前正在加载的资源索引
+			    };
+			
+			    resLoader.prototype.start = function () {
+			        this.status = 1;
+			        var _this = this;
+			        var baseUrl = this.option.baseUrl;
+			        for (var i = 0, l = this.option.resources.length; i < l; i++) {
+			            var r = this.option.resources[i], url = '';
+			            if (r.indexOf('http://') === 0 || r.indexOf('https://') === 0) {
+			                url = r;
+			            }
+			            else {
+			                url = baseUrl + r;
+			            }
+			            var image = new Image();
+			            image.onload = function () {
+			                _this.loaded();
+			            };
+			            image.onerror = function () {
+			                _this.loaded();
+			            };
+			            image.src = url;
+			        }
+			        if (isFunc(this.option.onStart)) {
+			            this.option.onStart(this.total);
+			        }
+			    }
+			    resLoader.prototype.loaded = function () {
+			        if (isFunc(this.option.onProgress)) {
+			            this.option.onProgress(++this.currentIndex, this.total);
+			        }
+			        //加载完毕
+			        if (this.currentIndex === this.total) {
+			            if (isFunc(this.option.onComplete)) {
+			                this.option.onComplete(this.total);
+			            }
+			        }
+			    }
+			    //暴露公共方法
+			    return resLoader;
+			}));	
+			
+			//01设置rem
+	        (function (doc, win) {      	        	
+	            var docEl = doc.documentElement,
+	                    isIOS = navigator.userAgent.match(/iphone|ipod|ipad/gi),
+	                    dpr = isIOS ? Math.min(win.devicePixelRatio, 2) : 1,
+	                    scale = 2 / dpr,
+	                    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+	            docEl.dataset.dpr = dpr;
+	            var recalc = function () {
+	                var width = docEl.clientWidth;
+	                if (width / dpr > 720) {
+	                    width = 640 * dpr;
+	                }
+	                docEl.style.fontSize = 100 * (width / 640) + 'px';
+	            };
+	            recalc();
+	            if (!doc.addEventListener) return;
+	            win.addEventListener(resizeEvt, recalc, false);
+	        })(document, window);			
+			
+			window.alert = function(name){
+			  var iframe = document.createElement("IFRAME");
+			  iframe.style.display="none";
+			  iframe.setAttribute("src", 'data:text/plain,');
+			  document.documentElement.appendChild(iframe);
+			  window.frames[0].window.alert(name);
+			  iframe.parentNode.removeChild(iframe);
+			 };					
+					
+					
+			//音频预加载
+		  	var load_audio = function (id) {
+	            var audio = document.getElementById(id);
+//	            switch(id)
+//	            {
+//	            	case "right":
+//	            	audio.src="img/right.mp3";
+//	            	break;
+//	            	case "wrong":
+//	            	audio.src="img/wrong.mp3";
+//	            	break;
+//	            }
+				audio.src = audio.src
+	            audio.play();
+	            	audio.pause();        
+	            document.addEventListener("WeixinJSBridgeReady", function (){
+		                audio.play();
+			            	audio.pause();
+	                }, false);      
+	            document.addEventListener('YixinJSBridgeReady', function (){
+	                    audio.play();
+			            	audio.pause();
+	                }, false);
+		  	}					
+						
+						
+						
+			
+		</script>
+	</head>
+	<body>
+		<div id="MostBMom">		
+			<div class="MBM_BottomBtnBox">
+				<router-link to="/Home" class="MBM_BottomBtn">
+					<img src="img/MBMBtn01.png" class="MBM_BottomImg"/>
+					<div class="MBM_BottomText MBM_Active">首页</div>
+				</router-link>
+				<router-link to="/Ranking" class="MBM_BottomBtn">
+					<img src="img/MBMBtn02.png" class="MBM_BottomImg"/>
+					<div class="MBM_BottomText">排行榜</div>					
+					
+				</router-link>
+				<router-link to="/My" class="MBM_BottomBtn">
+					<img src="img/MBMBtn03.png" class="MBM_BottomImg"/>
+					<div class="MBM_BottomText">我</div>					
+				</router-link>				
+			</div>			
+			<router-view></router-view>	
+								
+
+				
+
+
+
+ 
+			
+			 
+			
+			
+			
+			
+			
+		</div>	
+	
+
+
+
+		
+		
+		<script src="./js/bundle.js" type="text/javascript" charset="utf-8"></script>		
+		<script type="text/javascript">
+			//底部固定导航菜单
+			$('.MBM_BottomBtn').each(function(i){
+				$(this).click(function(){
+					$('.MBM_BottomText').removeClass('MBM_Active');
+					$('.MBM_BottomText').eq(i).addClass('MBM_Active');
+					$(window).scrollTop(0);
+					if(i==0){
+						$('.MBM_BottomImg').eq(0).attr('src','img/MBMBtn0101.png');
+						$('.MBM_BottomImg').eq(1).attr('src','img/MBMBtn02.png');
+						$('.MBM_BottomImg').eq(2).attr('src','img/MBMBtn03.png');	
+					}else if(i==1){
+						$('.MBM_BottomImg').eq(0).attr('src','img/MBMBtn01.png');
+						$('.MBM_BottomImg').eq(1).attr('src','img/MBMBtn0202.png');
+						$('.MBM_BottomImg').eq(2).attr('src','img/MBMBtn03.png');
+					}else if(i==2){
+						$('.MBM_BottomImg').eq(0).attr('src','img/MBMBtn01.png');
+						$('.MBM_BottomImg').eq(1).attr('src','img/MBMBtn02.png');
+						$('.MBM_BottomImg').eq(2).attr('src','img/MBMBtn0303.png');
+					}				 	
+				});
+				if (i==0){$(this).click()}
+			})
+			//公共时间过滤器
+			Vue.filter('time', function (value) {
+				var date = new Date(parseInt(value) * 1000);
+				var Y = date.getFullYear() + '.';
+				var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '.';
+				var D = date.getDate();
+				//h = date.getHours() + ':';
+				//m = date.getMinutes();
+				//s = date.getSeconds();
+				
+			    return Y+M+D;
+			})
+			
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		</script>			
+	</body>
+</html>
